@@ -1,7 +1,10 @@
 const express = require('express');
 const routes = express.Router();
 const authController = require('./controllers/authController');
+const dashboardController = require('./controllers/dashboardController');
+const projectController = require('./controllers/projectController');
 
+const authMiddleware = require('./middlewares/auth');
 const guestMiddleware = require('./middlewares/guest');
 
 routes.use((req, res, next) => {
@@ -16,8 +19,23 @@ routes.use((req, res, next) => {
  */
 routes.get('/', guestMiddleware, authController.signin);
 routes.get('/signup', guestMiddleware, authController.signup);
+routes.get('/signout', authController.signout);
 routes.post('/register', guestMiddleware, authController.register);
 routes.post('/authenticate', authController.authenticate);
+
+// checa se usuário está logado
+routes.use('/app', authMiddleware);
+
+/**
+ * Dashboard
+ */
+routes.get('/app/dashboard',  dashboardController.index);
+
+/**
+ * Projects
+ */
+routes.get('/app/projects/:id', projectController.show);
+routes.post('/app/projects/create', projectController.store);
 
 
 routes.use((req, res) => res.render('errors/404'));
