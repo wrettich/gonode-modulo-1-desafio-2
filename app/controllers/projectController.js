@@ -1,4 +1,4 @@
-const { Project } = require('../models');
+const { Project, Section } = require('../models');
 
 module.exports = {
 
@@ -19,12 +19,29 @@ module.exports = {
 		try {
 
 			user = req.session.user;
-			const project = await Project.findById(req.params.id);
+			const project = await Project.findOne({
+				include: [Section],
+			 	where: {id: req.params.id}
+			});
 
 			return res.render('projects/show', {user , project});
 
 		} catch (err) {
 			next(err);
+		}
+
+	},
+
+	async destroy(req, res, next) {
+		try {
+
+			await Project.destroy({ where: { id: req.params.id } });
+
+			req.flash('success', 'Projeto deletado com sucesso');
+			res.redirect('/app/dashboard');
+
+		} catch (err) {
+			return next();
 		}
 
 	},

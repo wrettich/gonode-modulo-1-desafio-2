@@ -1,0 +1,11 @@
+<nav>
+	<div class="sessions">
+		{% for section in project.Sections %}
+		<a href="/app/projects/{{project.id}}/sections/{{section.id}}" {% if currentSection.id == section.id %}class="active"{% endif %}>{{section.title}}</a>
+		{% endfor %}
+		{# <a href="" >Banco de dados</a> #}
+	</div>
+
+	<br>
+	<a href="#" data-modal-open="#new-section" class="btn"><img src="/img/plus.svg"> Nova Seção</a>
+</nav>

@@ -7,7 +7,7 @@ module.exports = {
 				primaryKey: true,
 				type: DataTypes.INTEGER,
 			},
-			ProojecId: {
+			ProjectId: {
 				type: DataTypes.INTEGER,
 				reference: {
 					model: 'Projects', key: 'id'
